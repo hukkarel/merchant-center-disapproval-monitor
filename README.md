@@ -152,4 +152,4 @@ MIT, viz [LICENSE](LICENSE). Software je poskytován „tak jak je", bez záruky
 
 **Author: Karel Huk**
 E-commerce PPC & Google Ads automation
-[https://karelhuk.cz](https://karelhuk.cz)
+[https://karelhuk.cz](https://karelhuk.cz/?utm_source=github&utm_medium=referral&utm_campaign=github-scripts&utm_content=merchant-center-disapproval-monitor)

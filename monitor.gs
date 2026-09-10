@@ -73,6 +73,10 @@ var CONFIG = {
   MAX_ISSUES_IN_ALERT: 8,
 };
 
+// Odkaz na web autora. UTM odliší v GA4 návštěvy z e-mailu a Google Chatu od přímých.
+var AUTHOR_URL = 'https://karelhuk.cz/';
+var UTM_CONTENT = 'merchant-center-disapproval-monitor';
+
 // ============================================================================
 //  VEŘEJNÉ FUNKCE — tyhle se spouští z editoru
 // ============================================================================
@@ -353,7 +357,7 @@ function buildEmailHtml_(merchantId, snapshot, previous, verdict) {
 
   html.push('<p style="margin:24px 0 0"><a href="https://merchants.google.com/mc/products/diagnostics?a=' + merchantId + '">Otevřít diagnostiku v Merchant Center</a></p>');
   html.push('<p style="margin:20px 0 0;color:#94A3B8;font-size:12px">Denní monitoring zamítnutých produktů · ' +
-    '<a href="https://karelhuk.cz" style="color:#94A3B8">karelhuk.cz</a></p>');
+    '<a href="' + escapeHtml_(authorLink_('email')) + '" style="color:#94A3B8">karelhuk.cz</a></p>');
   html.push('</div>');
   return html.join('');
 }
@@ -396,6 +400,12 @@ function buildChatCard_(merchantId, snapshot, previous, verdict) {
         text: 'Otevřít diagnostiku',
         onClick: { openLink: { url: 'https://merchants.google.com/mc/products/diagnostics?a=' + merchantId } },
       }],
+    },
+  });
+
+  widgets.push({
+    textParagraph: {
+      text: '<font color="#94A3B8">Denní monitoring zamítnutých produktů · <a href="' + authorLink_('google-chat') + '">karelhuk.cz</a></font>',
     },
   });
 
@@ -494,6 +504,13 @@ function topIssues_(issues, previousIssues, limit) {
     rows.push({ code: 'a další (' + rest.length + ')', count: restCount, delta: 0, isNew: false });
   }
   return rows;
+}
+
+/** Odkaz na web autora s UTM. E-mail jde v GA4 do kanálu Email, ostatní do Referral. */
+function authorLink_(source) {
+  var medium = source === 'email' ? 'email' : 'referral';
+  return AUTHOR_URL + '?utm_source=' + source + '&utm_medium=' + medium +
+    '&utm_campaign=github-scripts&utm_content=' + UTM_CONTENT;
 }
 
 function fmtPct_(value) {
